@@ -1,0 +1,9 @@
+services:
+  # This serves as the 'Persistent State' infrastructure for the pipeline
+  db:
+    image: postgres:13
+    container_name: capstone_db
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    ports:
+      - "5432:5432"
