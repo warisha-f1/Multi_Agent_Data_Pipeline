@@ -22,12 +22,14 @@ Ensure all dependencies for the agents, orchestration, and database engine are i
 Bash
 
 pip install prefect pandas sqlalchemy
+
 2. Pipeline Execution
 Trigger the Sequential Multi-Agent Flow. This starts the Prefect engine and executes the agents in order.
 
 Bash
 
 python sales_pipeline.py
+
 3. Data Verification
 Run the verification script to query the Long-Term Memory (SQL) and display the final enriched data.
 
