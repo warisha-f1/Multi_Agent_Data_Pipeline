@@ -1,52 +1,36 @@
-Project Overview:
-This project implements a Sequential Multi-Agent System designed to handle automated data extraction, cleaning, and persistence. Built as a Capstone project, it demonstrates high-level State Management, Infrastructure Resilience, and Agent Observability.
+## 🚀 Overview
+A resilient, multi-agent system designed to automate the Extraction, Transformation, and Loading (ETL) of sales data with built-in observability and state management.
 
-The system is designed to recover from infrastructure failures, such as database corruption or authentication conflicts, ensuring 100% data integrity through automated recovery protocols.
+## 🧠 System Architecture
+The pipeline is orchestrated by **Prefect** and consists of three specialized agents:
+1. **Extraction_Agent**: Pulls raw data from local source files.
+2. **Transformation_Agent**: Performs context engineering, adding 'verified' status and 'processed_at' timestamps.
+3. **Loading_Agent**: Persists the final state to a SQL Long-Term Memory (SQLite).
 
-System Architecture:
-The pipeline utilizes a modular agent-based architecture orchestrated by Prefect.
+## 🛠️ Tech Stack
+- **Orchestration**: Prefect (Logging & Tracing).
+- **Database**: SQLite (Persistent State Management).
+- **Data Handling**: Pandas & SQLAlchemy.
 
-Extraction Agent: A custom tool-powered agent that interfaces with raw data sources (CSV/Local).
+## 🔧 Problem Solving (Infrastructure Resilience)
+During development, the system encountered `OperationalError` and `Database malformed` issues.
+- **Resolution**: Implemented a "Clean-Start" protocol, clearing malformed binary states and re-provisioning the database engine to ensure 100% data integrity.
 
-Transformation Agent: An LLM-compatible sequential agent that performs context engineering and metadata enrichment.
+1. Environment Initialization
+Ensure all dependencies for the agents, orchestration, and database engine are installed.
 
-Loading Agent: A long-term memory agent responsible for persisting state into a relational SQL database.
-
-Tech Stack & Key Features:
-Agent Framework: Prefect (for Logging, Tracing, and Flow Orchestration).
-
-Database & State: SQLite (Production State) & PostgreSQL (Containerized Infrastructure).
-
-State Management: InMemorySessionService logic for short-term state and SQL for Long-Term Memory (LTM).
-
-Deployment: Docker Compose for containerized infrastructure.
-
-Engineering Challenges & Resilience:
-This project highlights real-world problem solving in Agent Deployment:
-
-Network Resilience: Successfully resolved OperationalError by bypassing IPv6/IPv4 port conflicts (Port 5432/5433 migration).
-
-State Recovery: Handled Database malformed exceptions by implementing a clean-slate re-provisioning protocol, ensuring the agent could recreate the persistent storage layer automatically.
-
-Getting Started:
-1. Environment Setup
 Bash
-pip install -r requirements.txt
 
-2. Infrastructure (Optional)
-To start the containerized Postgres database:
-Bash
-docker-compose up -d
+pip install prefect pandas sqlalchemy
+2. Pipeline Execution
+Trigger the Sequential Multi-Agent Flow. This starts the Prefect engine and executes the agents in order.
 
-3. Execution
-Run the multi-agent pipeline:
 Bash
+
 python sales_pipeline.py
+3. Data Verification
+Run the verification script to query the Long-Term Memory (SQL) and display the final enriched data.
 
-4. Verification (Observability)
-View the persisted state and agent logs:
 Bash
-python print_results.py
 
-Final Agent Output:
-Upon successful execution, the agents verify the data persistence state as follows: | Sale ID | Amount | Region | Processed At | Status | | :--- | :--- | :--- | :--- | :--- | | 101 | 250 | North | 2025-12-28 17:07:15 | verified | | 102 | 450 | South | 2025-12-28 17:07:15 | verified | | 103 | 150 | East | 2025-12-28 17:07:15 | verified |
+python print_results.py
